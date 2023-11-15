@@ -10,9 +10,12 @@ async function verifyReleaseManagers (index = 0) {
 	document.title = 'finding package'
 	const $package = document.querySelectorAll('div.small-padding.clickable-cursor[task_count="1"]')[index]
 	if ( !$package ) {
-		document.title = 'automation complete'
-		alert(document.title)
-		return
+		document.title = 'loading next page'
+		const url = new URL(location.href)
+		const nextPage = (url.searchParams.get('page') || 1) + 1
+		const $nextPage = document.querySelector(`a.pagination-link[aria-label="Page ${nextPage}."]`)
+		$nextPage.click()
+		return verifyReleaseManagers(0)
 	}
 	$package.click()
 	
@@ -45,4 +48,6 @@ async function verifyReleaseManagers (index = 0) {
 	document.title = 'continuing'
 	return verifyReleaseManagers(index)
 }
-verifyReleaseManagers()
+if ( String(location.href).startsWith('https://tidelift.com/lifter/release_managers_reviewed/packages/') ) {
+	verifyReleaseManagers()
+}
