@@ -21,10 +21,10 @@ async function verifyReleaseManagers (index = 0) {
 	if ( !$package ) {
 		document.title = 'loading next page'
 		const url = new URL(location.href)
-		const nextPage = (url.searchParams.get('page') || 1) + 1
+		const nextPage = Number(url.searchParams.get('page') || 1) + 1
 		const $nextPage = document.querySelector(`a.pagination-link[aria-label="Page ${nextPage}."]`)
 		$nextPage.click()
-		return verifyReleaseManagers(0)
+		return
 	}
 	$package.click()
 	
