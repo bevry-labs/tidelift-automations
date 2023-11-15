@@ -23,7 +23,7 @@ async function verifyReleaseManagers (index = 0) {
 		const nextPage = Number(url.searchParams.get('page') || 1) + 1
 		const $nextPage = document.querySelector(`a.pagination-link[aria-label="Page ${nextPage}."]`)
 		$nextPage.click()
-		await waitSeconds(1)
+		await waitSeconds(5)
 		return verifyReleaseManagers(0)
 	}
 	$package.click()
@@ -78,7 +78,7 @@ async function verifyLicenses (index = 0) {
 		const nextPage = Number(url.searchParams.get('page') || 1) + 1
 		const $nextPage = document.querySelector(`a.pagination-link[aria-label="Page ${nextPage}."]`)
 		$nextPage.click()
-		await waitSeconds(1)
+		await waitSeconds(5)
 		return verifyLicenses(0)
 	}
 	$package.click()
