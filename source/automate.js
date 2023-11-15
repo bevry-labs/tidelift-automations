@@ -1,4 +1,4 @@
-// tidelift.com#%#(async function() { const f = await fetch('https://raw.githubusercontent.com/bevry-labs/tidelift-automations/main/source/automate-release-managers.js'); const t = await f.text(); eval(t) })()
+// tidelift.com#%#(async function() { const f = await fetch('https://raw.githubusercontent.com/bevry-labs/tidelift-automations/main/source/automate.js'); const t = await f.text(); eval(t) })()
 function waitSeconds (seconds) {
 	return new Promise(resolve => setTimeout(resolve, seconds * 1000))
 }
@@ -56,7 +56,62 @@ async function verifyReleaseManagers (index = 0) {
 	
 	document.title = 'continuing'
 	return verifyReleaseManagers(index)
+}}
+async function verifyLicenses (index = 0) {
+	document.title = 'waiting for packages'
+	while ( !document.querySelector('div.small-padding.clickable-cursor[task_count]') ) {
+		await waitSeconds(1) // still loading
+	}
+
+	// todo packages
+	document.title = 'finding package'
+	const $todoPackages = document.querySelectorAll('div.small-padding.clickable-cursor[task_count="1"]')
+	if ( !$todoPackages.length ) {
+		document.title = 'automation complete'
+		alert(document.title)
+		return
+	}
+	const $package = $todoPackages[index]
+	if ( !$package ) {
+		document.title = 'loading next page'
+		const url = new URL(location.href)
+		const nextPage = Number(url.searchParams.get('page') || 1) + 1
+		const $nextPage = document.querySelector(`a.pagination-link[aria-label="Page ${nextPage}."]`)
+		$nextPage.click()
+		await waitSeconds(1)
+		return verifyLicenses(0)
+	}
+	$package.click()
+	
+	document.title = 'finding maintainers'
+	let $license, $submit, $background
+	while ( !managers || !$managers || !$checkbox || !$submit ) {
+		$background = document.querySelector('.modal-background')
+		$submit = document.querySelector('.button.is-primary')
+		$license = document.querySelector('input.check[name="Artistic License 2.0"]')
+		await waitSeconds(1)
+	}
+	if ( !$license ) {
+		document.title = 'unexpected license'
+		$package.innerText += ' ' + document.title
+		$background.click()
+		await waitSeconds(1)
+		return verifyLicenses(index + 1)
+	}
+	
+	document.title = 'confirming license'
+	$license.click()
+	await waitSeconds(1)
+	
+	document.title = 'saving license'
+	$submit.click()
+	await waitSeconds(1)
+	
+	document.title = 'continuing'
+	return verifyLicenses(index)
 }
 if ( location.pathname === '/lifter/release_managers_reviewed/packages/' ) {
 	verifyReleaseManagers()
+} else if ( location.pathname === '/lifter/packages_have_verified_licenses/packages/' ) {
+	verifyLicenses()
 }
