@@ -1,3 +1,4 @@
+// tidelift.com#%#(async function() { const f = await fetch('https://raw.githubusercontent.com/bevry-labs/tidelift-automations/main/source/automate-release-managers.js'); const t = await f.text(); eval(t) })()
 function waitSeconds (seconds) {
 	return new Promise(resolve => setTimeout(resolve, seconds * 1000))
 }
@@ -48,6 +49,6 @@ async function verifyReleaseManagers (index = 0) {
 	document.title = 'continuing'
 	return verifyReleaseManagers(index)
 }
-if ( String(location.href).startsWith('https://tidelift.com/lifter/release_managers_reviewed/packages/') ) {
+if ( location.pathname === '/lifter/release_managers_reviewed/packages/' ) {
 	verifyReleaseManagers()
 }
