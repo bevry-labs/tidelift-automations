@@ -83,7 +83,7 @@ async function verifyLicenses (index = 0) {
 	}
 	$package.click()
 	
-	document.title = 'finding maintainers'
+	document.title = 'finding licenses'
 	let $license, $submit, $background
 	while ( !$license || !$submit || !$background ) {
 		$background = document.querySelector('.modal-background')
