@@ -56,7 +56,7 @@ async function verifyReleaseManagers (index = 0) {
 	
 	document.title = 'continuing'
 	return verifyReleaseManagers(index)
-}}
+}
 async function verifyLicenses (index = 0) {
 	document.title = 'waiting for packages'
 	while ( !document.querySelector('div.small-padding.clickable-cursor[task_count]') ) {
@@ -85,7 +85,7 @@ async function verifyLicenses (index = 0) {
 	
 	document.title = 'finding maintainers'
 	let $license, $submit, $background
-	while ( !managers || !$managers || !$checkbox || !$submit ) {
+	while ( !$license || !$submit || !$background ) {
 		$background = document.querySelector('.modal-background')
 		$submit = document.querySelector('.button.is-primary')
 		$license = document.querySelector('input.check[name="Artistic License 2.0"]')
