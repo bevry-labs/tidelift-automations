@@ -88,11 +88,13 @@ async function verifyLicenses (index = 0) {
 	while ( !$license || !$submit || !$background ) {
 		$background = document.querySelector('.modal-background')
 		$submit = document.querySelector('.button.is-primary')
-		$license = document.querySelector('input.check[name="Artistic License 2.0"]')
+		$license = document.querySelector('input.check')
 		await waitSeconds(1)
 	}
-	if ( !$license ) {
-		document.title = 'unexpected license'
+
+	const $expectedLicense = document.querySelector('input.check[name="Artistic License 2.0"]')
+	if ( !$expectedLicense ) {
+		document.title = 'unexpected license: ' + $license.getAttribute('name')
 		$package.innerText += ' ' + document.title
 		$background.click()
 		await waitSeconds(1)
@@ -100,7 +102,7 @@ async function verifyLicenses (index = 0) {
 	}
 	
 	document.title = 'confirming license'
-	$license.click()
+	$expectedLicense.click()
 	await waitSeconds(1)
 	
 	document.title = 'saving license'
