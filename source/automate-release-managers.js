@@ -16,7 +16,7 @@ async function verifyReleaseManagers (index = 0) {
 		document.title = 'automation complete'
 		alert(document.title)
 		return
-	]
+	}
 	const $package = $todoPackages[index]
 	if ( !$package ) {
 		document.title = 'loading next page'
