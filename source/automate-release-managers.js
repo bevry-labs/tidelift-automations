@@ -17,9 +17,12 @@ async function verifyReleaseManagers () {
 	package.click()
 	
 	document.title = 'finding maintainers'
-	let managers = ''
-	while ( !managers ) {
-		managers = Array.from(document.querySelectorAll('.has-text-weight-bold.my-2') || []).map(i => i.innerText).join(', ')
+	let managers = '', $managers, $checkbox, $submit
+	while ( !managers || !$managers || !$checkbox || !$submit ) {
+		$submit = document.querySelector('.button.is-primary')
+		$checkbox = document.querySelector('input[type=checkbox]')
+		$managers = document.querySelectorAll('.has-text-weight-bold.my-2')
+		managers = Array.from($managers || []).map(i => i.innerText).join(', ')
 		await waitSeconds(1)
 	}
 	if ( managers !== 'bevryme' ) {
@@ -29,11 +32,11 @@ async function verifyReleaseManagers () {
 	}
 	
 	document.title = 'confirming maintainers'
-	document.querySelector('input[type=checkbox]').click()
+	$checkbox.click()
 	await waitSeconds(1)
 	
 	document.title = 'saving maintainers'
-	document.querySelector('.button.is-primary').click()
+	$submit.click()
 	await waitSeconds(1)
 	
 	document.title = 'continuing'
