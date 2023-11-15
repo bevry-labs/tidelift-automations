@@ -4,8 +4,7 @@ function waitSeconds (seconds) {
 }
 async function verifyReleaseManagers (index = 0) {
 	document.title = 'waiting for packages'
-	const $anyPackage = document.querySelector('div.small-padding.clickable-cursor[task_count]')
-	while ( !$anyPackage ) {
+	while ( !document.querySelector('div.small-padding.clickable-cursor[task_count]') ) {
 		await waitSeconds(1) // still loading
 	}
 
