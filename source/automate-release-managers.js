@@ -4,12 +4,20 @@ function waitSeconds (seconds) {
 }
 async function verifyReleaseManagers (index = 0) {
 	document.title = 'waiting for packages'
-	while ( ! document.querySelector('div.small-padding.clickable-cursor') ) {
+	const $anyPackage = document.querySelector('div.small-padding.clickable-cursor[task_count]')
+	while ( !$anyPackage ) {
 		await waitSeconds(1) // still loading
 	}
-	
+
+	// todo packages
 	document.title = 'finding package'
-	const $package = document.querySelectorAll('div.small-padding.clickable-cursor[task_count="1"]')[index]
+	const $todoPackages = document.querySelectorAll('div.small-padding.clickable-cursor[task_count="1"]')
+	if ( !$packages.length ) {
+		document.title = 'automation complete'
+		alert(document.title)
+		return
+	]
+	const $package = $todoPackages[index]
 	if ( !$package ) {
 		document.title = 'loading next page'
 		const url = new URL(location.href)
