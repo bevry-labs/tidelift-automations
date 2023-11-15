@@ -12,7 +12,7 @@ async function verifyReleaseManagers (index = 0) {
 	// todo packages
 	document.title = 'finding package'
 	const $todoPackages = document.querySelectorAll('div.small-padding.clickable-cursor[task_count="1"]')
-	if ( !$packages.length ) {
+	if ( !$todoPackages.length ) {
 		document.title = 'automation complete'
 		alert(document.title)
 		return
