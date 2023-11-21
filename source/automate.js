@@ -115,24 +115,14 @@
 			if ( !$package ) break
 			
 			document.title = 'finding versioning schemes'
-			let $versioning, $submit, $background
-			while ( !$versioning || !$submit || !$background ) {
+			let $semver, $submit, $background
+			while ( !$semver || !$submit || !$background ) {
 				$background = document.querySelector('.modal-background')
 				$submit = document.querySelector('.button.is-primary')
-				$versioning = document.querySelector('input.check')
+				$semver = document.querySelector('input.check[value="semver"]')
 				await waitSeconds(1)
 			}
 		
-			const $semver = document.querySelector('input.check[value="semver"]')
-			if ( !$semver ) {
-				document.title = 'unexpected versioning scheme: ' + $versioning.getAttribute('name')
-				$package.innerText += ' ' + document.title
-				$background.click()
-				await waitSeconds(1)
-				nextPackageIndex()
-				continue
-			}
-			
 			document.title = 'confirming versioning scheme'
 			$semver.click()
 			await waitSeconds(1)
@@ -142,10 +132,37 @@
 			await waitSeconds(1)
 		}
 	}
+	async function verifyMaintenancePlan () {
+		resetPackageIndex()
+		while (true) {
+			const $package = await openPackage()
+			if ( !$package ) break
+			
+			document.title = 'finding maintenance plan'
+			let $recent, $no, $submit, $background
+			while ( !$recent || !$no || !$submit || !$background ) {
+				$background = document.querySelector('.modal-background')
+				$submit = document.querySelector('.button.is-primary')
+				$recent = document.querySelector('input.check[value="recent"]')
+				$no = document.querySelector('input.check[value="no"]')
+				await waitSeconds(1)
+			}
+		
+			document.title = 'confirming maintenance plan'
+			$recent.click()
+			$no.click()
+			await waitSeconds(1)
+			
+			document.title = 'saving maintenance plan'
+			$submit.click()
+			await waitSeconds(1)
+		}
+	}
 	const actionMap = {
 		'/lifter/release_managers_reviewed/packages/': verifyReleaseManagers,
 		'/lifter/packages_have_verified_licenses/packages/': verifyLicenses,
-		'/lifter/packages_have_versioning_schemes/packages/': verifyVersioningSchemes
+		'/lifter/packages_have_versioning_schemes/packages/': verifyVersioningSchemes,
+		'/lifter/packages_have_maintenance_plans/packages/': verifyMaintenancePlan
 	}
 	const action = actionMap[location.pathname]
 	if ( action ) await action()
