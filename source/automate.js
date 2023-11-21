@@ -82,17 +82,16 @@
 			if ( !$package ) break
 			
 			document.title = 'finding licenses'
-			let $license, $submit, $background
-			while ( !$license || !$submit || !$background ) {
+			let $submit, $background
+			while ( !$submit || !$background ) {
 				$background = document.querySelector('.modal-background')
 				$submit = document.querySelector('.button.is-primary')
-				$license = document.querySelector('input.check')
 				await waitSeconds(1)
 			}
 		
 			const $expectedLicense = document.querySelector('input.check[name="Artistic License 2.0"]')
 			if ( !$expectedLicense ) {
-				document.title = 'unexpected license: ' + $license.getAttribute('name')
+				document.title = 'unexpected license'
 				$package.innerText += ' ' + document.title
 				$background.click()
 				await waitSeconds(1)
