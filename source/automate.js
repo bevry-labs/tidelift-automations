@@ -14,7 +14,7 @@
 		
 		const $todoPackages = document.querySelectorAll('div.small-padding.clickable-cursor[task_count="1"]')
 		if ( !$todoPackages.length ) {
-			packageIndex = 0
+			resetPackageIndex()
 			document.title = 'no more packages left'
 			alert(document.title)
 			return
@@ -22,7 +22,7 @@
 		
 		const $package = $todoPackages[packageIndex]
 		if ( !$package ) {
-			packageIndex = 0
+			resetPackageIndex()
 			document.title = 'loading next page'
 			const url = new URL(location.href)
 			const nextPage = Number(url.searchParams.get('page') || 1) + 1
