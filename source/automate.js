@@ -32,6 +32,7 @@
 		}
 		
 		$package.click()
+		await waitSeconds(2) // give it time to load, otherwise the prior package dom elements may be persisting
 		return $package
 	}
 	function resetPackageIndex() {
