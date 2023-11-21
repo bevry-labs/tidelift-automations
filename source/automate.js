@@ -6,8 +6,9 @@
 	}
 	async function openPackage() {
 		document.title = 'waiting for packages'
+		await waitSeconds(5)
 		while ( !document.querySelector('div.small-padding.clickable-cursor[task_count]') ) {
-			await waitSeconds(1) // still loading
+			await waitSeconds(5) // still loading
 		}
 		document.title = 'finding package'
 		
@@ -27,12 +28,11 @@
 			const nextPage = Number(url.searchParams.get('page') || 1) + 1
 			const $nextPage = document.querySelector(`a.pagination-link[aria-label="Page ${nextPage}."]`)
 			$nextPage.click()
-			await waitSeconds(5)
-			return await openNextPackage()
+			return await openPackage()
 		}
 		
 		$package.click()
-		await waitSeconds(2) // give it time to load, otherwise the prior package dom elements may be persisting
+		await waitSeconds(5) // give it time to load, otherwise the prior package dom elements may be persisting
 		return $package
 	}
 	function resetPackageIndex() {
@@ -55,24 +55,22 @@
 				$checkbox = document.querySelector('input[type=checkbox]')
 				$managers = document.querySelectorAll('.has-text-weight-bold.my-2')
 				managers = Array.from($managers || []).map(i => i.innerText).join(', ')
-				await waitSeconds(1)
+				await waitSeconds(2)
 			}
 			if ( managers !== 'bevryme' ) {
 				document.title = 'unexpected maintainers: ' + managers
 				$package.innerText += ': ' + managers
 				$background.click()
-				await waitSeconds(1)
 				nextPackageIndex()
 				continue
 			}
 			
 			document.title = 'confirming maintainers'
 			$checkbox.click()
-			await waitSeconds(1)
 			
 			document.title = 'saving maintainers'
-			$submit.click()
 			await waitSeconds(1)
+			$submit.click()
 		}
 	}
 	async function verifyLicenses () {
@@ -86,7 +84,7 @@
 			while ( !$submit || !$background ) {
 				$background = document.querySelector('.modal-background')
 				$submit = document.querySelector('.button.is-primary')
-				await waitSeconds(1)
+				await waitSeconds(2)
 			}
 		
 			const $expectedLicense = document.querySelector('input.check[name="Artistic License 2.0"]')
@@ -94,18 +92,16 @@
 				document.title = 'unexpected license'
 				$package.innerText += ' ' + document.title
 				$background.click()
-				await waitSeconds(1)
 				nextPackageIndex()
 				continue
 			}
 			
 			document.title = 'confirming license'
 			$expectedLicense.click()
-			await waitSeconds(1)
 			
 			document.title = 'saving license'
-			$submit.click()
 			await waitSeconds(1)
+			$submit.click()
 		}
 	}
 	async function verifyVersioningSchemes () {
@@ -120,16 +116,15 @@
 				$background = document.querySelector('.modal-background')
 				$submit = document.querySelector('.button.is-primary')
 				$semver = document.querySelector('input.check[value="semver"]')
-				await waitSeconds(1)
+				await waitSeconds(2)
 			}
 		
 			document.title = 'confirming versioning scheme'
 			$semver.click()
-			await waitSeconds(1)
 			
 			document.title = 'saving versioning scheme'
-			$submit.click()
 			await waitSeconds(1)
+			$submit.click()
 		}
 	}
 	async function verifyMaintenancePlan () {
@@ -145,17 +140,16 @@
 				$submit = document.querySelector('.button.is-primary')
 				$recent = document.querySelector('input.check[value="recent"]')
 				$no = document.querySelector('input.check[value="no"]')
-				await waitSeconds(1)
+				await waitSeconds(2)
 			}
 		
 			document.title = 'confirming maintenance plan'
 			$recent.click()
 			$no.click()
-			await waitSeconds(1)
 			
 			document.title = 'saving maintenance plan'
-			$submit.click()
 			await waitSeconds(1)
+			$submit.click()
 		}
 	}
 	const actionMap = {
