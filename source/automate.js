@@ -4,7 +4,7 @@
 	function waitSeconds (seconds) {
 		return new Promise(resolve => setTimeout(resolve, seconds * 1000))
 	}
-	async function openNextPackage() {
+	async function openPackage() {
 		document.title = 'waiting for packages'
 		while ( !document.querySelector('div.small-padding.clickable-cursor[task_count]') ) {
 			await waitSeconds(1) // still loading
@@ -31,13 +31,19 @@
 			return await openNextPackage()
 		}
 		
-		++packageIndex
 		$package.click()
 		return $package
 	}
+	function resetPackageIndex() {
+		packageIndex = 0
+	}
+	function nextPackageIndex() {
+		++packageIndex
+	}
 	async function verifyReleaseManagers () {
+		resetPackageIndex()
 		while (true) {
-			const $package = await openNextPackage()
+			const $package = await openPackage()
 			if ( !$package ) break
 			
 			document.title = 'finding maintainers'
@@ -55,6 +61,7 @@
 				$package.innerText += ': ' + managers
 				$background.click()
 				await waitSeconds(1)
+				nextPackageIndex()
 				continue
 			}
 			
@@ -68,8 +75,9 @@
 		}
 	}
 	async function verifyLicenses () {
+		resetPackageIndex()
 		while (true) {
-			const $package = await openNextPackage()
+			const $package = await openPackage()
 			if ( !$package ) break
 			
 			document.title = 'finding licenses'
@@ -87,6 +95,7 @@
 				$package.innerText += ' ' + document.title
 				$background.click()
 				await waitSeconds(1)
+				nextPackageIndex()
 				continue
 			}
 			
@@ -100,8 +109,9 @@
 		}
 	}
 	async function verifyVersioningSchemes () {
+		resetPackageIndex()
 		while (true) {
-			const $package = await openNextPackage()
+			const $package = await openPackage()
 			if ( !$package ) break
 			
 			document.title = 'finding versioning schemes'
@@ -119,6 +129,7 @@
 				$package.innerText += ' ' + document.title
 				$background.click()
 				await waitSeconds(1)
+				nextPackageIndex()
 				continue
 			}
 			
